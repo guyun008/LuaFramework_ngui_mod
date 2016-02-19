@@ -45,7 +45,11 @@ namespace LuaFramework {
 
         ///------------------------------------------------------------------------------------
         public static void AddEvent(int _event, ByteBuffer data) {
-            lock(sEvents)
+            if (_event == 104)
+            {
+                int a = 0;
+            }
+            lock (sEvents)
             {
                 sEvents.Enqueue(new KeyValuePair<int, ByteBuffer>(_event, data));
             }

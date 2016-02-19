@@ -53,12 +53,12 @@ public class SocketClient {
         {
             if (sockteClientState == netState.None)
             {
-                Thread.Sleep(10);
+                Thread.Sleep(1000);
             }
             else if (sockteClientState == netState.ToConnect)
             {
                 SendConnect();
-                Thread.Sleep(1000);//1秒连接一下
+                Thread.Sleep(100);
             }
             else if (sockteClientState == netState.Connected)
             {
@@ -119,6 +119,7 @@ public class SocketClient {
         } catch (Exception e) {
             Close();
             //Debug.LogError(e.Message);
+            sockteClientState = netState.None;
             lock (NetworkManager.sEvents)
             {
                 NetworkManager.AddEvent(Protocal.ConnectFailer, new ByteBuffer());
@@ -142,10 +143,14 @@ public class SocketClient {
         else
         {
             //Close();
-            lock (NetworkManager.sEvents)
+            if (sockteClientState == netState.ToConnect)
             {
-                NetworkManager.AddEvent(Protocal.ConnectFailer, new ByteBuffer());
+                lock (NetworkManager.sEvents)
+                {
+                    NetworkManager.AddEvent(Protocal.ConnectFailer, new ByteBuffer());
+                }
             }
+            sockteClientState = netState.None;
         }
     }
 
@@ -166,7 +171,7 @@ public class SocketClient {
                 byte[] payload = ms.ToArray();
                 outStream.Write(payload, 0, payload.Length);
             } else {
-                Debug.LogError("client.connected----->>false");
+                //Debug.LogError("client.connected----->>false");
             }
         }
     }
@@ -235,7 +240,7 @@ public class SocketClient {
         try {
             outStream.EndWrite(r);
         } catch (Exception ex) {
-            Debug.LogError("OnWrite--->>>" + ex.Message);
+            //Debug.LogError("OnWrite--->>>" + ex.Message);
         }
     }
 
