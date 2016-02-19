@@ -20,14 +20,15 @@ local islogging = false
 
 function Network.Start() 
     logWarn("Network.Start!!")
-    Event.AddListener(Connect, this.OnConnect) 
-    Event.AddListener(Login, this.OnLogin) 
-    Event.AddListener(Exception, this.OnException) 
-    Event.AddListener(Disconnect, this.OnDisconnect) 
+    Event.AddListener(ProtocalID.Connect, this.OnConnect) 
+    Event.AddListener(ProtocalID.ConnectFailer, this.OnConnectFailer) 
+    Event.AddListener(ProtocalID.Exception, this.OnException) 
+    Event.AddListener(ProtocalID.Disconnect, this.OnDisconnect) 
 end
 
 --Socket消息--
 function Network.OnSocket(key, data)
+    logWarn("NetMessage:"..tostring(key))
     Event.Brocast(tostring(key), data)
 end
 
@@ -47,6 +48,11 @@ end
 function Network.OnDisconnect() 
     islogging = false
     logError("OnDisconnect------->>>>")
+end
+
+function Network.OnConnectFailer()
+    islogging = false
+    logError("OnConnectFailer------->>>>")
 end
 
 --登录返回--
@@ -141,9 +147,9 @@ end
 
 --卸载网络监听--
 function Network.Unload()
-    Event.RemoveListener(Connect)
-    Event.RemoveListener(Login)
-    Event.RemoveListener(Exception)
-    Event.RemoveListener(Disconnect)
+    Event.RemoveListener(ProtocalID.Connect)
+    Event.RemoveListener(ProtocalID.ConnectFailer)
+    Event.RemoveListener(ProtocalID.Exception)
+    Event.RemoveListener(ProtocalID.Disconnect)
     logWarn('Unload Network...')
 end
