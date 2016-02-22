@@ -18,7 +18,7 @@ local gameObject
 --构建函数--
 function PromptCtrl.New()
 	logWarn("PromptCtrl.New--->>")
-    this.promptPanel = require("View/PromptPanel.lua").New()
+    this.promptPanel = require("View/PromptPanel.lua").new()
 	return this
 end
 
@@ -29,7 +29,7 @@ end
 
 --启动事件--
 function PromptCtrl.OnCreate(obj)
-    this.promptPanel.Awake(obj)
+    this.promptPanel:Awake(obj)
 	gameObject = obj
 	transform = obj.transform
 
