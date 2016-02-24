@@ -14,6 +14,10 @@ function logWarn(str)
 	Util.LogWarning(str)
 end
 
+function logTable(t)
+    log(table.tostring(t))
+end
+
 --查找对象--
 function find(str)
 	return GameObject.Find(str)
@@ -47,6 +51,46 @@ function findPanel(str)
 		return nil
 	end
 	return obj:GetComponent("BaseLua")
+end
+
+function table.tostring(tbl, indent, limit, depth, jstack)
+  limit   = limit  or 1000
+  depth   = depth  or 7
+  jstack  = jstack or {}
+  local i = 0
+
+  local output = {}
+  if type(tbl) == "table" then
+    -- very important to avoid disgracing ourselves with circular referencs...
+    for i,t in ipairs(jstack) do
+      if tbl == t then
+        return "<self>,\n"
+      end
+    end
+    table.insert(jstack, tbl)
+
+    table.insert(output, "{\n")
+    for key, value in pairs(tbl) do
+      local innerIndent = (indent or " ") .. (indent or " ")
+      table.insert(output, innerIndent .. tostring(key) .. " = ")
+      table.insert(output,
+        value == tbl and "<self>," or table.tostring(value, innerIndent, limit, depth, jstack)
+      )
+
+      i = i + 1
+      if i > limit then
+        table.insert(output, (innerIndent or "") .. "...\n")
+        break
+      end
+    end
+
+    table.insert(output, indent and (indent or "") .. "},\n" or "}")
+  else
+    if type(tbl) == "string" then tbl = string.format("%q", tbl) end -- quote strings
+    table.insert(output, tostring(tbl) .. ",\n")
+  end
+
+  return table.concat(output)
 end
 
 function clone(object)

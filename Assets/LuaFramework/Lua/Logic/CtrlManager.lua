@@ -39,12 +39,12 @@ function CtrlManager.openPanel(ctrlName)
 	if panelCtrl ~= nil then
 		panelCtrl.Awake()
 	else
-		local panelCtrl = require("Controller/"..ctrlName..".lua").New()
+		local panelCtrl = require("Controller/"..ctrlName..".lua"):new()
 		this.AddCtrl(ctrlName, panelCtrl)
 		if not panelCtrl then
 			logError("Do not create: " ..ctrlName.."Ctrl!")
 		else
-			panelCtrl.Awake()
+			panelCtrl:Awake()
 		end
 	end
 	

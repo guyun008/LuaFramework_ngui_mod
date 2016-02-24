@@ -30,3 +30,5 @@ soundMgr = LuaHelper.GetSoundManager()
 networkMgr = LuaHelper.GetNetManager()
 
 GameObject = UnityEngine.GameObject
+
+DEBUG = 1
