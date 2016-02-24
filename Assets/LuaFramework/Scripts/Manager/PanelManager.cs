@@ -21,16 +21,16 @@ namespace LuaFramework {
         /// 创建面板，请求资源管理器
         /// </summary>
         /// <param name="type"></param>
-        public void CreatePanel(string name, LuaFunction func = null) {
+        public void CreatePanel(string name, LuaFunction func = null,LuaTable luaTable = null) {
             AssetBundle bundle = ResManager.LoadBundle(name);
-            StartCoroutine(StartCreatePanel(name, bundle, func));
+            StartCoroutine(StartCreatePanel(name, bundle, func, luaTable));
             Debug.LogWarning("CreatePanel::>> " + name + " " + bundle);
         }
 
         /// <summary>
         /// 创建面板
         /// </summary>
-        IEnumerator StartCreatePanel(string name, AssetBundle bundle, LuaFunction func = null) {
+        IEnumerator StartCreatePanel(string name, AssetBundle bundle, LuaFunction func = null,LuaTable luaTable = null) {
             name += "Panel";
             GameObject prefab = Util.LoadAsset(bundle, name);
             yield return new WaitForEndOfFrame();
@@ -47,7 +47,7 @@ namespace LuaFramework {
             yield return new WaitForEndOfFrame();
             go.AddComponent<LuaBehaviour>().OnInit(bundle);
 
-            if (func != null) func.Call(go);
+            if (func != null) func.Call(luaTable,go);
             Debug.Log("StartCreatePanel------>>>>" + name);
         }
     }
