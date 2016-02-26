@@ -10,7 +10,6 @@ function PromptCtrl:ctor()
 end
 
 function PromptCtrl:OnCreate( obj )
-	log(table.tostring(self))
 	self.promptPanel:Awake(obj)
 	self.gameObject = obj
 	self.transform = obj.transform
