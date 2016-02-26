@@ -1,6 +1,8 @@
 ﻿求点星支持(star ^o^) 
 
 本工程基于：https://github.com/jarjin/LuaFramework_NGUI 感谢ulua作者
+注意事项：
+	(1)真机运行：AppConst.cs   public const bool DebugMode = false; //调试模式-用于内部测试
 修改的点主要有：
 	(1)网络：修改为线程处理
 	(2)lua层： Controller 和 View 模块 修改为 local方式
